@@ -48,3 +48,5 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 # Step 5 - Initialize Pod Networking
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+# Step 6 (Single Node Only) - Setup Cluster
+kubectl taint nodes --all node-role.kubernetes.io/master-
