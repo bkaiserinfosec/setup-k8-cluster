@@ -14,11 +14,11 @@ EOF
 sysctl --system
 swapoff -a
 # Step 2 - Install Docker CE
-dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-dnf install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
-dnf install docker-ce --nobest -y
-systemctl start docker
-systemctl enable docker
+dnf -y remove podman runc
+curl https://download.docker.com/linux/centos/docker-ce.repo -o /etc/yum.repos.d/docker-ce.repo
+sed -i -e "s/enabled=1/enabled=0/g" /etc/yum.repos.d/docker-ce.repo
+dnf --enablerepo=docker-ce-stable -y install docker-ce 
+systemctl enable --now docker
 # Step 3 - Install Kubernetes
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
